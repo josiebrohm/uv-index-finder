@@ -3,7 +3,7 @@ import './App.css';
 
 function App() {
 	var headers = new Headers();
-	headers.append("x-access-token", "openuv-y2rmfnz6v6r-io");
+	headers.append("x-access-token", API_KEY);
 	headers.append("Content-Type", "application/json");
 
 	const requestOptions: RequestInit = {
