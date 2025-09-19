@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import './App.css';
 
+import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
+
 function App() {
 	var headers = new Headers();
-	headers.append("x-access-token", "openuv-y2rmfnz6v6r-io");
+	headers.append("x-access-token", process.env.API_KEY || "");
 	headers.append("Content-Type", "application/json");
 
 	const requestOptions: RequestInit = {
@@ -12,9 +14,9 @@ function App() {
 		redirect: 'follow'
 	};
 
-	const [latitude, setLatitude] = useState(0);
-	const [longitude, setLongitude] = useState(0);
-	const [uvIndex, setUvIndex] = useState(0);
+	const [latitude, setLatitude] = useState<number>(0.00);
+	const [longitude, setLongitude] = useState<number>(0.00);
+	const [uvIndex, setUvIndex] = useState<number>(0.00);
 
 	async function fetchData() {
 		try {
@@ -46,15 +48,15 @@ function App() {
 			<header className="App-header">
 				<h1>UV Index Finder</h1>
 				<>
-					<label>
-						Latitude (-90° to 90°):
-						<input name='latitude' type='number' value={latitude} min={-90} max={90} onChange={(e) => setLatitude(+e.target.value)}/>
-					</label>
-					
-					<label>
-						Longitude (-180° to 180°):
-						<input name='longitude' type='number' value={longitude} min={-180} max={180}  onChange={(e) => setLongitude(+e.target.value)}/>
-					</label>
+					<div className="flex-auto">
+						<label htmlFor="latitude" className="font-bold block mb-2">Latitude (-90° to 90°):</label>
+						<InputNumber inputId="latitude" value={latitude} min={-90} max={90} onValueChange={(e: InputNumberValueChangeEvent) => setLatitude(e.value || 0)} minFractionDigits={2} maxFractionDigits={5} />
+					</div>
+
+					<div className="flex-auto">
+						<label htmlFor="longitude" className="font-bold block mb-2">Longitude (-180° to 180°):</label>
+						<InputNumber inputId="longitude" value={longitude} min={-180} max={180} onValueChange={(e: InputNumberValueChangeEvent) => setLongitude(e.value || 0)} minFractionDigits={2} maxFractionDigits={5} />
+					</div>
 					
 					<button type='submit' onClick={getUV}>Go</button>
 				</>
