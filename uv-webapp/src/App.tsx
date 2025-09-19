@@ -5,6 +5,9 @@ import Logo from "./logo.png";
 
 import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
+import { Card } from 'primereact/card';
+import { Divider } from 'primereact/divider';
+
 
 import "primereact/resources/themes/saga-orange/theme.css";
 
@@ -54,30 +57,34 @@ function App() {
 		})
 	}
 
+	const footer = "*All data is calculated at an altitude of 100m";
+
 	return (
 		<div className="App">
-			<header className="App-header">
+			<header className='header'>
 				<img alt='logo' src={Logo} height={100}/>
 				<h1>UV Index Finder</h1>
-				<>
-					<div className="flex-auto">
-						<label htmlFor="latitude" className="font-bold block mb-2">Latitude (-90° to 90°):</label>
-						<InputNumber inputId="latitude" value={latitude} min={-90} max={90} onValueChange={(e: InputNumberValueChangeEvent) => setLatitude(e.value || 0)} minFractionDigits={0} maxFractionDigits={5} />
-					</div>
-
-					<div className="flex-auto">
-						<label htmlFor="longitude" className="font-bold block mb-2">Longitude (-180° to 180°):</label>
-						<InputNumber inputId="longitude" value={longitude} min={-180} max={180} onValueChange={(e: InputNumberValueChangeEvent) => setLongitude(e.value || 0)} minFractionDigits={0} maxFractionDigits={5} />
-					</div>
-					
-					<Button label='Go' onClick={getUV} loading={isLoading}/>
-				</>
-				
-				{ hasLoaded ? <>
-					<p>For Latitude = {latitude} and Longitude = {longitude}</p>
-					<p>Current UV Index = {uvIndex}</p>
-				</> : <></>}
 			</header>
+
+			<div className='body'>
+				<div className="input-field">
+					<label htmlFor="latitude" className="font-bold block mb-2">Latitude (-90° to 90°):</label>
+					<InputNumber inputId="latitude" value={latitude} min={-90} max={90} onValueChange={(e: InputNumberValueChangeEvent) => setLatitude(e.value || 0)} minFractionDigits={0} maxFractionDigits={5} />
+				</div>
+
+				<div className="input-field">
+					<label htmlFor="longitude" className="font-bold block mb-2">Longitude (-180° to 180°):</label>
+					<InputNumber inputId="longitude" value={longitude} min={-180} max={180} onValueChange={(e: InputNumberValueChangeEvent) => setLongitude(e.value || 0)} minFractionDigits={0} maxFractionDigits={5} />
+				</div>
+				
+				<Button label='Go' onClick={getUV} loading={isLoading}/>
+
+				{ hasLoaded ? <Card className='uv-data' title="UV Data*" subTitle={`Latitude = ${latitude}, Longitude = ${longitude}`} footer={footer} >
+					<p>Current UV Index = {uvIndex}</p>
+					</Card> : <></>}
+			</div>
+			
+			
 		</div>
 	);
 }
