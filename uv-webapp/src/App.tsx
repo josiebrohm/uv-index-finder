@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import './App.css';
 
 import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
+import { Button } from 'primereact/button';
 
 function App() {
 	var headers = new Headers();
-	headers.append("x-access-token", process.env.API_KEY || "");
+	headers.append("x-access-token", process.env.REACT_APP_API_KEY || "");
 	headers.append("Content-Type", "application/json");
 
 	const requestOptions: RequestInit = {
@@ -58,10 +59,11 @@ function App() {
 						<InputNumber inputId="longitude" value={longitude} min={-180} max={180} onValueChange={(e: InputNumberValueChangeEvent) => setLongitude(e.value || 0)} minFractionDigits={2} maxFractionDigits={5} />
 					</div>
 					
-					<button type='submit' onClick={getUV}>Go</button>
+					<Button label='Go' onClick={getUV}/>
 				</>
 				
-				<p>current uv index: {uvIndex}</p>
+				<p>For Latitude = {latitude} and Longitude = {longitude}</p>
+				<p>Current UV Index = {uvIndex}</p>
 			</header>
 		</div>
 	);
