@@ -70,12 +70,30 @@ function App() {
 			<div className='body'>
 				<div className="input-field">
 					<label htmlFor="latitude" className="font-bold block mb-2">Latitude (-90° to 90°):</label>
-					<InputNumber inputId="latitude" value={latitude} min={-90} max={90} onValueChange={(e: InputNumberValueChangeEvent) => setLatitude(e.value || 0)} minFractionDigits={0} maxFractionDigits={5} />
+					<InputNumber inputId="latitude" 
+						value={latitude} 
+						min={-90} 
+						max={90} 
+						onChange={e => setHasLoaded(false)}
+						onValueChange={(e: InputNumberValueChangeEvent) => {
+							setLatitude(e.value || 0)}
+						} 
+						minFractionDigits={0} 
+						maxFractionDigits={5} />
 				</div>
 
 				<div className="input-field">
 					<label htmlFor="longitude" className="font-bold block mb-2">Longitude (-180° to 180°):</label>
-					<InputNumber inputId="longitude" value={longitude} min={-180} max={180} onValueChange={(e: InputNumberValueChangeEvent) => setLongitude(e.value || 0)} minFractionDigits={0} maxFractionDigits={5} />
+					<InputNumber inputId="longitude" 
+						value={longitude} 
+						min={-180} 
+						max={180} 
+						onChange={e => setHasLoaded(false)}
+						onValueChange={(e: InputNumberValueChangeEvent) => {
+							setLongitude(e.value || 0)}
+						} 
+						minFractionDigits={0} 
+						maxFractionDigits={5} />
 				</div>
 				
 				<Button label='Go' onClick={getUV} loading={isLoading}/>
