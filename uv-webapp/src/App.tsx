@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import './App.css';
 
+import Logo from "./logo.png";
+
 import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
+
+import "primereact/resources/themes/saga-orange/theme.css";
 
 function App() {
 	var headers = new Headers();
@@ -18,8 +22,12 @@ function App() {
 	const [latitude, setLatitude] = useState<number>(0.00);
 	const [longitude, setLongitude] = useState<number>(0.00);
 	const [uvIndex, setUvIndex] = useState<number>(0.00);
+	const [isLoading, setIsLoading] = useState(false);
+	const [hasLoaded, setHasLoaded] = useState(false);
 
 	async function fetchData() {
+		setIsLoading(true);
+		setHasLoaded(false);
 		try {
 			const response = await fetch(`https://api.openuv.io/api/v1/uv?lat=${latitude}&lng=${longitude}&alt=100&dt=`, requestOptions);
 			if (!response.ok) {
@@ -40,6 +48,8 @@ function App() {
 			if (data?.result) {
 				setUvIndex(data.result.uv);
 				console.log("UV index: ", uvIndex);
+				setIsLoading(false);
+				setHasLoaded(true);
 			}
 		})
 	}
@@ -47,23 +57,26 @@ function App() {
 	return (
 		<div className="App">
 			<header className="App-header">
+				<img alt='logo' src={Logo} height={100}/>
 				<h1>UV Index Finder</h1>
 				<>
 					<div className="flex-auto">
 						<label htmlFor="latitude" className="font-bold block mb-2">Latitude (-90° to 90°):</label>
-						<InputNumber inputId="latitude" value={latitude} min={-90} max={90} onValueChange={(e: InputNumberValueChangeEvent) => setLatitude(e.value || 0)} minFractionDigits={2} maxFractionDigits={5} />
+						<InputNumber inputId="latitude" value={latitude} min={-90} max={90} onValueChange={(e: InputNumberValueChangeEvent) => setLatitude(e.value || 0)} minFractionDigits={0} maxFractionDigits={5} />
 					</div>
 
 					<div className="flex-auto">
 						<label htmlFor="longitude" className="font-bold block mb-2">Longitude (-180° to 180°):</label>
-						<InputNumber inputId="longitude" value={longitude} min={-180} max={180} onValueChange={(e: InputNumberValueChangeEvent) => setLongitude(e.value || 0)} minFractionDigits={2} maxFractionDigits={5} />
+						<InputNumber inputId="longitude" value={longitude} min={-180} max={180} onValueChange={(e: InputNumberValueChangeEvent) => setLongitude(e.value || 0)} minFractionDigits={0} maxFractionDigits={5} />
 					</div>
 					
-					<Button label='Go' onClick={getUV}/>
+					<Button label='Go' onClick={getUV} loading={isLoading}/>
 				</>
 				
-				<p>For Latitude = {latitude} and Longitude = {longitude}</p>
-				<p>Current UV Index = {uvIndex}</p>
+				{ hasLoaded ? <>
+					<p>For Latitude = {latitude} and Longitude = {longitude}</p>
+					<p>Current UV Index = {uvIndex}</p>
+				</> : <></>}
 			</header>
 		</div>
 	);
