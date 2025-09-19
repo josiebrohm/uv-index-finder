@@ -10,6 +10,7 @@ import { Divider } from 'primereact/divider';
 
 
 import "primereact/resources/themes/saga-orange/theme.css";
+import MapEmbed from './components/MapEmbed';
 
 function App() {
 	var headers = new Headers();
@@ -81,6 +82,7 @@ function App() {
 
 				{ hasLoaded ? <Card className='uv-data' title="UV Data*" subTitle={`Latitude = ${latitude}, Longitude = ${longitude}`} footer={footer} >
 					<p>Current UV Index = {uvIndex}</p>
+					<MapEmbed latitude={latitude} longitude={longitude} />
 					</Card> : <></>}
 			</div>
 			

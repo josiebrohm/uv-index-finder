@@ -64,3 +64,9 @@
 .uv-data {
 	margin: 20px;
 }
+
+.map-embed {
+	width: 100%;
+	min-width: 400px;
+	height: 400px;
+}
