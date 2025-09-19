@@ -70,3 +70,9 @@
 	min-width: 400px;
 	height: 400px;
 }
+
+footer {
+	position: absolute;
+	font-size: 12px;
+	bottom: 0;
+}
