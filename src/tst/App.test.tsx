@@ -39,6 +39,5 @@ describe('Location Input', () => {
 		await user.type(longInput, "1808080{enter}");
 		expect(longInput).toHaveValue("180");
 	})
-
 	
 });

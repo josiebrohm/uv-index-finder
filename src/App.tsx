@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 
-import Logo from "./logo.png";
+import Logo from "./assets/images/logo.png";
 
 import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
