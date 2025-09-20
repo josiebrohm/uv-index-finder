@@ -43,7 +43,7 @@ cd uv-index-finder
 
 **2. Open in a terminal**
 ```bash
-cd uv-index-finder
+cd uv-index-finder-main
 ```
 
 ### Common Steps (for both options)
