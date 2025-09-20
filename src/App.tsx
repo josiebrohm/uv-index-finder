@@ -11,16 +11,6 @@ import "primereact/resources/themes/saga-orange/theme.css";
 import MapEmbed from './components/MapEmbed';
 
 function App() {
-	var headers = new Headers();
-	headers.append("x-access-token", process.env.REACT_APP_API_KEY || "");
-	headers.append("Content-Type", "application/json");
-
-	const requestOptions: RequestInit = {
-		method: 'GET',
-		headers: headers,
-		redirect: 'follow'
-	};
-
 	const [latitude, setLatitude] = useState<number>(0.00);
 	const [longitude, setLongitude] = useState<number>(0.00);
 	const [uvIndex, setUvIndex] = useState<number>(0.00);
@@ -28,15 +18,31 @@ function App() {
 	const [hasFetchedData, setHasFetchedData] = useState(false);
 	const [isShowingError, setIsShowingError] = useState(false);
 
-	const toast = useRef<Toast>(null);
+	function getUVIndex(e: React.FormEvent) {
+		setIsShowingError(false);
+		e.preventDefault();
 
-	function showError(message: string = "Something went wrong") {
-		setIsShowingError(true);
-		setIsLoading(false);
-		toast.current?.show({ severity: 'error', summary: 'Error', detail: message, life: 10000 });
+		fetchData().then(data => {
+			if (data?.result) {
+				setUvIndex(data.result.uv);
+				console.log("UV index: ", uvIndex);
+				setIsLoading(false);
+				setHasFetchedData(true);
+			}
+		})
 	}
 
 	async function fetchData() {
+		const headers = new Headers();
+		headers.append("x-access-token", process.env.REACT_APP_API_KEY || "");
+		headers.append("Content-Type", "application/json");
+
+		const requestOptions: RequestInit = {
+			method: 'GET',
+			headers: headers,
+			redirect: 'follow'
+		};
+
 		setIsLoading(true);
 		setHasFetchedData(false);
 		try {
@@ -59,25 +65,19 @@ function App() {
 		}
 	}
 
-	function getUV(e: React.FormEvent) {
-		setIsShowingError(false);
-		e.preventDefault();
+	const errorToast = useRef<Toast>(null);
 
-		fetchData().then(data => {
-			if (data?.result) {
-				setUvIndex(data.result.uv);
-				console.log("UV index: ", uvIndex);
-				setIsLoading(false);
-				setHasFetchedData(true);
-			}
-		})
+	function showError(message: string = "Something went wrong") {
+		setIsShowingError(true);
+		setIsLoading(false);
+		errorToast.current?.show({ severity: 'error', summary: 'Error', detail: message, life: 10000 });
 	}
 
-	const footer = "*All data is calculated at an altitude of 100m";
+	const cardFooter = "*All data is calculated at an altitude of 100m";
 
 	return (
 		<div className="App">
-			<Toast ref={toast} position='top-center' />
+			<Toast ref={errorToast} position='top-center' />
 
 			<header className='header'>
 				<img alt='logo' src={Logo} height={100} />
@@ -117,9 +117,9 @@ function App() {
 						maxFractionDigits={5} />
 				</div>
 
-				<Button label='Go' onClick={getUV} loading={isLoading} />
+				<Button label='Go' onClick={getUVIndex} loading={isLoading} />
 
-				{hasFetchedData ? <Card className='uv-data' title="UV Data*" subTitle={`Latitude = ${latitude}, Longitude = ${longitude}`} footer={footer} >
+				{hasFetchedData ? <Card className='uv-data' title="UV Data*" subTitle={`Latitude = ${latitude}, Longitude = ${longitude}`} footer={cardFooter} >
 					<p>Current UV Index = {uvIndex}</p>
 					<MapEmbed latitude={latitude} longitude={longitude} />
 				</Card> : <></>}

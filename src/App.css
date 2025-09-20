@@ -18,7 +18,7 @@
 	align-items: center;
 	justify-content: center;
 	text-align: center;
-	
+
 	background-color: var(--white);
 	color: var(--black);
 
@@ -28,7 +28,7 @@
 }
 
 .header {
-	position:relative;
+	position: relative;
 	top: 0;
 	padding: 20px;
 	height: min-content;
