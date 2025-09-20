@@ -6,7 +6,6 @@ import Logo from "./logo.png";
 import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
-import { Divider } from 'primereact/divider';
 
 
 import "primereact/resources/themes/saga-orange/theme.css";
@@ -27,11 +26,11 @@ function App() {
 	const [longitude, setLongitude] = useState<number>(0.00);
 	const [uvIndex, setUvIndex] = useState<number>(0.00);
 	const [isLoading, setIsLoading] = useState(false);
-	const [hasLoaded, setHasLoaded] = useState(false);
+	const [hasFetchedData, setHasFetchedData] = useState(false);
 
 	async function fetchData() {
 		setIsLoading(true);
-		setHasLoaded(false);
+		setHasFetchedData(false);
 		try {
 			const response = await fetch(`https://api.openuv.io/api/v1/uv?lat=${latitude}&lng=${longitude}&alt=100&dt=`, requestOptions);
 			if (!response.ok) {
@@ -53,7 +52,7 @@ function App() {
 				setUvIndex(data.result.uv);
 				console.log("UV index: ", uvIndex);
 				setIsLoading(false);
-				setHasLoaded(true);
+				setHasFetchedData(true);
 			}
 		})
 	}
@@ -74,7 +73,7 @@ function App() {
 						value={latitude} 
 						min={-90} 
 						max={90} 
-						onChange={e => setHasLoaded(false)}
+						onChange={e => setHasFetchedData(false)}
 						onValueChange={(e: InputNumberValueChangeEvent) => {
 							setLatitude(e.value || 0)}
 						} 
@@ -88,7 +87,7 @@ function App() {
 						value={longitude} 
 						min={-180} 
 						max={180} 
-						onChange={e => setHasLoaded(false)}
+						onChange={e => setHasFetchedData(false)}
 						onValueChange={(e: InputNumberValueChangeEvent) => {
 							setLongitude(e.value || 0)}
 						} 
@@ -98,7 +97,7 @@ function App() {
 				
 				<Button label='Go' onClick={getUV} loading={isLoading}/>
 
-				{ hasLoaded ? <Card className='uv-data' title="UV Data*" subTitle={`Latitude = ${latitude}, Longitude = ${longitude}`} footer={footer} >
+				{ hasFetchedData ? <Card className='uv-data' title="UV Data*" subTitle={`Latitude = ${latitude}, Longitude = ${longitude}`} footer={footer} >
 					<p>Current UV Index = {uvIndex}</p>
 					<MapEmbed latitude={latitude} longitude={longitude} />
 					</Card> : <></>}
