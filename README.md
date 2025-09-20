@@ -50,6 +50,7 @@ cd uv-index-finder
 
 ### Option 2: Download ZIP
 **1. Download & Extract**
+
 - Download ZIP (on GitHub, click the green **Code** button -> **Download ZIP**)
 - Extract the ZIP file to a folder on your computer
 
@@ -65,15 +66,19 @@ npm install
 ```
 
 **4. Obtain a free API key**
+
 Sign up at [OpenUV.io](https://www.openuv.io/) and create a free acount to generate an API key.
+Note that free accounts have a limit of 50 requests per day.
 
 **5. Configure environment variables**
+
 Create a .env file in the project root
 ```bash
-REACT_APP_API_KEY=your_api_key
+REACT_APP_API_KEY="your_api_key"
 ```
 
 **6. Start the app**
+
 ```bash
 npm start
 ```
@@ -83,8 +88,8 @@ npm start
 2. Enter appropriate latitude and longitude values 
 3. Click the **Go** button
 4. The app will display a card with the following information:
-	- the current UV index for the entered location
-	- a map centred at the entered coordinates with a marker
+	- The current UV index for the entered location
+	- A map centred at the entered coordinates with a marker
 
 ## Planned Improvements
 - Show UV safety recommendations based on index (e.g. "Use sun protection", "Stay indoors between 12:00 and 14:00")

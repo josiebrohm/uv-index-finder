@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import './App.css';
 
 import Logo from "./assets/images/logo.png";
@@ -6,6 +6,7 @@ import Logo from "./assets/images/logo.png";
 import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
+import { Toast } from 'primereact/toast';
 
 
 import "primereact/resources/themes/saga-orange/theme.css";
@@ -27,6 +28,15 @@ function App() {
 	const [uvIndex, setUvIndex] = useState<number>(0.00);
 	const [isLoading, setIsLoading] = useState(false);
 	const [hasFetchedData, setHasFetchedData] = useState(false);
+	const [isShowingError, setIsShowingError] = useState(false);
+
+	const toast = useRef<Toast>(null);
+
+	function showError(message: string = "Something went wrong") {
+		setIsShowingError(true);
+		setIsLoading(false);
+		toast.current?.show({severity:'error', summary:'Error', detail: message, life: 10000});
+	}
 
 	async function fetchData() {
 		setIsLoading(true);
@@ -34,17 +44,25 @@ function App() {
 		try {
 			const response = await fetch(`https://api.openuv.io/api/v1/uv?lat=${latitude}&lng=${longitude}&alt=100&dt=`, requestOptions);
 			if (!response.ok) {
-				throw new Error(`HTTP Error: Status ${response.status}`);
+				const error = new Error(`An error occurred while retrieving UV data: HTTP Status ${response.status} — Check your API key`);
+				if (isShowingError) {
+					showError(error.message);
+				}
+				throw error;
 			}
 
 			return await response.json();
-		} catch (error) {
+		} catch (error: unknown) {
 			console.error("Error fetching UV data: ", error);
+
+			const message = error instanceof Error ? error.message : "An unknown error occurred";
+			showError(message);
 			return null;
 		}
 	}
 
 	function getUV(e: React.FormEvent) {
+		setIsShowingError(false);
 		e.preventDefault();
 
 		fetchData().then(data => {
@@ -61,6 +79,8 @@ function App() {
 
 	return (
 		<div className="App">
+			<Toast ref={toast} position='top-center'/>
+
 			<header className='header'>
 				<img alt='logo' src={Logo} height={100}/>
 				<h1>UV Index Finder</h1>
@@ -76,7 +96,6 @@ function App() {
 						max={90} 
 						onChange={e => setHasFetchedData(false)}
 						onValueChange={(e: InputNumberValueChangeEvent) => {
-							console.log(e.value);
 							setLatitude(e.value || 0)}
 						} 
 						minFractionDigits={0} 
@@ -92,7 +111,6 @@ function App() {
 						max={180} 
 						onChange={e => setHasFetchedData(false)}
 						onValueChange={(e: InputNumberValueChangeEvent) => {
-							console.log(e.value);
 							setLongitude(e.value || 0)}
 						} 
 						minFractionDigits={0} 
