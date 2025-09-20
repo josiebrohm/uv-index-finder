@@ -3,7 +3,7 @@ interface MapProps {
 	longitude: number;
 }
 
-export default function MapEmbed({ latitude, longitude} : MapProps) {
+export default function MapEmbed({ latitude, longitude }: MapProps) {
 	const mapURL = `https://www.google.com/maps?q=${latitude},${longitude}&hl=en&z=14&output=embed`;
 
 	return (

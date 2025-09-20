@@ -11,7 +11,7 @@ describe('Location Input', () => {
 		const longInput = screen.getByTestId("long-input");
 		expect(longInput).toHaveValue("0");
 	})
-	
+
 	it('updates values on change', async () => {
 		const user = userEvent.setup();
 		render(<App />);
@@ -39,5 +39,5 @@ describe('Location Input', () => {
 		await user.type(longInput, "1808080{enter}");
 		expect(longInput).toHaveValue("180");
 	})
-	
+
 });

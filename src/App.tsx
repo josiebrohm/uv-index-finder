@@ -2,12 +2,10 @@ import React, { useRef, useState } from 'react';
 import './App.css';
 
 import Logo from "./assets/images/logo.png";
-
 import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { Toast } from 'primereact/toast';
-
 
 import "primereact/resources/themes/saga-orange/theme.css";
 import MapEmbed from './components/MapEmbed';
@@ -35,7 +33,7 @@ function App() {
 	function showError(message: string = "Something went wrong") {
 		setIsShowingError(true);
 		setIsLoading(false);
-		toast.current?.show({severity:'error', summary:'Error', detail: message, life: 10000});
+		toast.current?.show({ severity: 'error', summary: 'Error', detail: message, life: 10000 });
 	}
 
 	async function fetchData() {
@@ -79,52 +77,54 @@ function App() {
 
 	return (
 		<div className="App">
-			<Toast ref={toast} position='top-center'/>
+			<Toast ref={toast} position='top-center' />
 
 			<header className='header'>
-				<img alt='logo' src={Logo} height={100}/>
+				<img alt='logo' src={Logo} height={100} />
 				<h1>UV Index Finder</h1>
 			</header>
 
 			<div className='body'>
 				<div className="input-field" >
 					<label htmlFor="latitude" className="font-bold block mb-2">Latitude (-90° to 90°):</label>
-					<InputNumber inputId="latitude" 
+					<InputNumber inputId="latitude"
 						data-testid="lat-input"
-						value={latitude} 
-						min={-90} 
-						max={90} 
+						value={latitude}
+						min={-90}
+						max={90}
 						onChange={e => setHasFetchedData(false)}
 						onValueChange={(e: InputNumberValueChangeEvent) => {
-							setLatitude(e.value || 0)}
-						} 
-						minFractionDigits={0} 
+							setLatitude(e.value || 0)
+						}
+						}
+						minFractionDigits={0}
 						maxFractionDigits={5} />
 				</div>
 
 				<div className="input-field">
 					<label htmlFor="longitude" className="font-bold block mb-2">Longitude (-180° to 180°):</label>
-					<InputNumber inputId="longitude" 
+					<InputNumber inputId="longitude"
 						data-testid="long-input"
-						value={longitude} 
-						min={-180} 
-						max={180} 
+						value={longitude}
+						min={-180}
+						max={180}
 						onChange={e => setHasFetchedData(false)}
 						onValueChange={(e: InputNumberValueChangeEvent) => {
-							setLongitude(e.value || 0)}
-						} 
-						minFractionDigits={0} 
+							setLongitude(e.value || 0)
+						}
+						}
+						minFractionDigits={0}
 						maxFractionDigits={5} />
 				</div>
-				
-				<Button label='Go' onClick={getUV} loading={isLoading}/>
 
-				{ hasFetchedData ? <Card className='uv-data' title="UV Data*" subTitle={`Latitude = ${latitude}, Longitude = ${longitude}`} footer={footer} >
+				<Button label='Go' onClick={getUV} loading={isLoading} />
+
+				{hasFetchedData ? <Card className='uv-data' title="UV Data*" subTitle={`Latitude = ${latitude}, Longitude = ${longitude}`} footer={footer} >
 					<p>Current UV Index = {uvIndex}</p>
 					<MapEmbed latitude={latitude} longitude={longitude} />
-					</Card> : <></>}
+				</Card> : <></>}
 			</div>
-			
+
 		</div>
 	);
 }
