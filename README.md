@@ -20,6 +20,18 @@ A simple web app that displays the UV index at a specified location on earth. Bu
 - [OpenUV API](https://www.openuv.io/) - UV index data source
 - CSS (custom styling in `App.css`)
 
+## Requirements
+Before running this project, ensure you have the following installed:
+
+- **Node.js** (version 18.x or higher recommended)  
+- **npm** (comes bundled with Node.js)
+
+You can verify your installations by running in a terminal:
+```bash
+node -v
+npm -v
+```
+
 ## Getting Started
 
 You can set up this project in two ways: either by cloning it with Git or by downloading it as a ZIP file.  
