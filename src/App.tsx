@@ -67,14 +67,16 @@ function App() {
 			</header>
 
 			<div className='body'>
-				<div className="input-field">
+				<div className="input-field" >
 					<label htmlFor="latitude" className="font-bold block mb-2">Latitude (-90° to 90°):</label>
 					<InputNumber inputId="latitude" 
+						data-testid="lat-input"
 						value={latitude} 
 						min={-90} 
 						max={90} 
 						onChange={e => setHasFetchedData(false)}
 						onValueChange={(e: InputNumberValueChangeEvent) => {
+							console.log(e.value);
 							setLatitude(e.value || 0)}
 						} 
 						minFractionDigits={0} 
@@ -84,11 +86,13 @@ function App() {
 				<div className="input-field">
 					<label htmlFor="longitude" className="font-bold block mb-2">Longitude (-180° to 180°):</label>
 					<InputNumber inputId="longitude" 
+						data-testid="long-input"
 						value={longitude} 
 						min={-180} 
 						max={180} 
 						onChange={e => setHasFetchedData(false)}
 						onValueChange={(e: InputNumberValueChangeEvent) => {
+							console.log(e.value);
 							setLongitude(e.value || 0)}
 						} 
 						minFractionDigits={0} 
